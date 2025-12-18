@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --ps-bg: 2 6 23; /* slate-950 */
+    --ps-blue: 56 189 248; /* sky-400 */
+    --ps-cyan: 34 211 238; /* cyan-400 */
+    --ps-yellow: 250 204 21; /* amber-400 */
+  }
+
+  body {
+    background: rgb(var(--ps-bg));
+    color: white;
+  }
+}
+
+@layer components {
+  .ps-bg {
+    background:
+      radial-gradient(900px circle at 15% 0%, rgb(var(--ps-blue) / 0.28), transparent 60%),
+      radial-gradient(900px circle at 85% 10%, rgb(var(--ps-yellow) / 0.22), transparent 55%),
+      radial-gradient(700px circle at 50% 110%, rgb(var(--ps-cyan) / 0.14), transparent 55%),
+      linear-gradient(180deg, rgb(var(--ps-bg)) 0%, rgb(var(--ps-bg)) 100%);
+  }
+
+  .ps-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 40%, transparent 70%);
+  }
+
+  .ps-card {
+    background: rgb(255 255 255 / 0.045);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.02),
+      0 20px 40px rgb(0 0 0 / 0.40);
+    backdrop-filter: blur(12px);
+  }
+
+  .ps-card:hover {
+    border-color: rgb(var(--ps-cyan) / 0.55);
+    box-shadow:
+      0 0 0 1px rgb(var(--ps-cyan) / 0.20),
+      0 0 36px rgb(var(--ps-blue) / 0.18),
+      0 0 30px rgb(var(--ps-yellow) / 0.12),
+      0 24px 55px rgb(0 0 0 / 0.45);
+  }
+
+  .ps-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ps-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+}

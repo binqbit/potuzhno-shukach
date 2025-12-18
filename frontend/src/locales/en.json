@@ -1,0 +1,14 @@
+{
+  "appName": "Potuzhno Shukach",
+  "tagline": "Search the web with powerful summaries",
+  "searchTagline": "Power-find info from the internet",
+  "searchPlaceholder": "What do you want to find?",
+  "search": "Search",
+  "searching": "Searching…",
+  "clearSearch": "Clear search",
+  "removeImage": "Remove image",
+  "emptyHint": "Type a query and press Enter",
+  "results": "Results",
+  "noResults": "No results found",
+  "errorGeneric": "Something went wrong. Please try again."
+}
