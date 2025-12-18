@@ -1,0 +1,22 @@
+services:
+  backend:
+    image: potuzhno-shukach-backend-php
+    build:
+      context: ./php
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      MAX_RESULTS: ${MAX_RESULTS:-8}
+    expose:
+      - "8000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "php",
+          "-r",
+          "if(@file_get_contents('http://localhost:8000/api/health')===false){exit(1);} echo 'ok';",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10

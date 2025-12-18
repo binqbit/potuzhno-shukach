@@ -136,7 +136,7 @@ export default function App() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden ps-bg text-white">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden ps-bg text-white">
       <div className="pointer-events-none absolute inset-0 opacity-35 ps-grid" />
 
       <header className="relative mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between">
@@ -164,7 +164,7 @@ export default function App() {
         <LanguageToggle />
       </header>
 
-      <main className="relative mx-auto w-full max-w-4xl px-4 pb-16 pt-2">
+      <main className="relative mx-auto w-full max-w-4xl flex-1 px-4 pb-12 pt-2">
         <section className="ps-card rounded-3xl p-5 sm:p-8">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-bold leading-tight tracking-tight sm:text-4xl">
@@ -293,6 +293,47 @@ export default function App() {
           <p className="mt-6 text-sm text-white/60">{t("noResults")}</p>
         ) : null}
       </main>
+
+      <footer className="relative mx-auto w-full max-w-4xl px-4 pb-10 pt-2">
+        <div className="ps-card rounded-2xl px-4 py-5 text-xs text-white/65 sm:px-6">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-12">
+            <section className="min-w-0 sm:col-span-2 lg:col-span-5">
+              <div className="text-[11px] font-semibold tracking-widest text-white/50">{t("project")}</div>
+              <p className="mt-2 break-words text-sm font-semibold text-white/80">
+                {t("footerDescription", { name: t("appName") })}
+              </p>
+            </section>
+
+            <section className="min-w-0 lg:col-span-4">
+              <div className="text-[11px] font-semibold tracking-widest text-white/50">{t("footerFeaturesTitle")}</div>
+              <ul className="mt-2 list-disc space-y-1 ps-5 text-white/65">
+                <li className="break-words">{t("footerFeatureInfo")}</li>
+                <li className="break-words">{t("footerFeatureSummaries")}</li>
+                <li className="break-words">{t("footerFeatureImages")}</li>
+              </ul>
+            </section>
+
+            <section className="min-w-0 lg:col-span-3">
+              <div className="text-[11px] font-semibold tracking-widest text-white/50">{t("footerContactsTitle")}</div>
+              <ul className="mt-2 space-y-1">
+                <li className="break-all">
+                  <a
+                    href="mailto:binqbit@gmail.com"
+                    className="text-sky-200/90 underline decoration-white/20 hover:text-sky-100 hover:decoration-sky-200/60"
+                  >
+                    binqbit@gmail.com
+                  </a>
+                </li>
+              </ul>
+
+              <div className="mt-4 flex items-center justify-between gap-2 border-t border-white/10 pt-3 text-[11px]">
+                <span className="font-semibold text-white/70">{t("footerCreatedTitle")}:</span>
+                <span className="font-semibold text-white/80">2025</span>
+              </div>
+            </section>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

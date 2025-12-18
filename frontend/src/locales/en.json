@@ -10,5 +10,15 @@
   "emptyHint": "Type a query and press Enter",
   "results": "Results",
   "noResults": "No results found",
-  "errorGeneric": "Something went wrong. Please try again."
+  "errorGeneric": "Something went wrong. Please try again.",
+  "project": "Project",
+  "author": "Author",
+  "projectInfo": "{{name}} - web search with short summaries.",
+  "footerDescription": "{{name}} is a powerful Ukrainian-built search engine for up-to-date web info.",
+  "footerFeaturesTitle": "Features:",
+  "footerFeatureInfo": "Search up-to-date information on the web",
+  "footerFeatureSummaries": "Get short summaries for each result",
+  "footerFeatureImages": "Paste images (clipboard) as additional context",
+  "footerContactsTitle": "Contacts",
+  "footerCreatedTitle": "Created"
 }

@@ -7,8 +7,9 @@ Potuzhno Shukach is a web search app that returns a simple list of results (titl
 ## Stack
 
 - Frontend: React + Vite + TailwindCSS (EN/UA UI)
-- Backend: Python + FastAPI (OpenAI Web Search + vision for pasted images)
-- Runtime: Docker Compose (Nginx serves UI and proxies `/api/*` to backend)
+- Backend (default): Python + FastAPI (OpenAI Web Search + vision for pasted images)
+- Backend (optional): PHP (same API)
+- Runtime (local testing): Docker Compose (Nginx serves UI and proxies `/api/*` to backend)
 - Nginx config: `config/nginx.conf`
 
 ## Quick start (Docker)
@@ -29,12 +30,45 @@ docker compose up --build
 
 Open `http://localhost:${WEB_PORT:-8080}`.
 
+## PHP backend (optional)
+
+Run the same app but with the PHP backend instead of Python:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.php.yml up --build
+```
+
+## Deploy to shared hosting (PHP + static, single folder)
+
+Docker Compose is intended for local testing. For a typical shared hosting (Apache + PHP), build a single upload folder:
+
+```powershell
+./scripts/export-hosting.ps1
+```
+
+Upload everything from `hosting/` into your site root (`public_html`, `www`, etc).
+
+Create `hosting/.env` (or set hosting environment variables):
+
+```bash
+OPENAI_API_KEY=...
+# OPENAI_MODEL=gpt-4o-mini
+# MAX_RESULTS=8
+```
+
+Check:
+- `GET /api/health` → `{ "status": "ok" }`
+
+Notes:
+- A purely static hosting (no PHP/backend) is not supported because it would expose `OPENAI_API_KEY`.
+- If your hosting returns 500 because of `.htaccess` `Options`, remove the `Options ...` lines.
+
 ## Environment
 
 - `OPENAI_API_KEY` (required)
 - `OPENAI_MODEL` (optional, default: `gpt-4o-mini`)
 - `MAX_RESULTS` (optional, default: `8`)
-- `WEB_PORT` (optional, default: `8080`)
+- `WEB_PORT` (optional, default: `8080`, Docker only)
 
 ## API
 
@@ -42,7 +76,7 @@ Open `http://localhost:${WEB_PORT:-8080}`.
 - `POST /api/search`
 
 Notes:
-- `lang` is optional; if omitted, the backend uses the `Accept-Language` header (supported: `en`, `uk`).
+- `lang` is optional; if omitted, the backend uses the `Accept-Language` header (supported: `en`, `uk`; default: `uk`).
 - Either `query` or `images` is required.
 - `images` is an array of `data:image/*` URLs (the UI attaches them automatically on paste).
 

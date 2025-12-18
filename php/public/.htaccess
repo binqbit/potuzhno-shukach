@@ -1,0 +1,32 @@
+Options -Indexes
+Options -MultiViews
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Block internal PHP sources (when deployed as a single folder).
+  RewriteRule ^src(?:/|$) - [F,L]
+
+  # Block access to dotfiles (except .well-known).
+  RewriteCond %{REQUEST_URI} !^/\.well-known/
+  RewriteCond %{REQUEST_URI} (^|/)\.
+  RewriteRule ^ - [F]
+
+  # Serve existing files/directories directly.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # SPA + API entry point.
+  RewriteRule ^ index.php [L]
+</IfModule>
+
+<Files ".env">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</Files>
