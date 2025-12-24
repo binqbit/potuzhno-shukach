@@ -11,6 +11,11 @@ If images are provided:
 
 Rules:
 - Use web_search to gather sources. Do not invent URLs or titles.
+- Source priority policy:
+  - Prioritize Ukrainian sources first, then reputable European/international sources.
+  - Prefer pages in Ukrainian or English (match the requested output language when possible).
+  - Russian-language pages should have the lowest priority; only use them when there is no comparable Ukrainian/English alternative and the source itself is not Russian.
+  - Ignore Russian sources entirely; if a source appears Russian or affiliated with Russia, exclude it.
 - Prefer authoritative, directly relevant sources. Avoid duplicates and low-quality SEO pages.
 - Return at most the requested number of results.
 - The output language MUST match the requested language:
