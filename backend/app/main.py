@@ -44,8 +44,17 @@ def search(payload: SearchRequest, accept_language: str | None = Header(default=
 
     query = payload.query or ""
     try:
-        results, took_ms = web_search(query=query, lang=lang, limit=payload.limit, images=payload.images)
-        return SearchResponse(query=query, lang=lang, results=results, took_ms=took_ms)
+        results, took_ms, answer = web_search(
+            query=query, lang=lang, limit=payload.limit, images=payload.images
+        )
+        return SearchResponse(
+            query=query,
+            lang=lang,
+            results=results,
+            took_ms=took_ms,
+            answer=answer,
+            ai_answer=answer,
+        )
     except Exception:
         detail = "Search failed. Please try again." if lang == "en" else "Пошук не вдався. Спробуйте ще раз."
         raise HTTPException(status_code=502, detail=detail)

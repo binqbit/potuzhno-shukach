@@ -89,5 +89,5 @@ Request:
 Response:
 
 ```json
-{ "query": "string", "lang": "en|uk", "results": [{ "title": "...", "url": "https://...", "snippet": "...", "source": "..." }], "took_ms": 123 }
+{ "query": "string", "lang": "en|uk", "results": [{ "title": "...", "url": "https://...", "snippet": "...", "source": "..." }], "answer": "short direct answer", "took_ms": 123 }
 ```

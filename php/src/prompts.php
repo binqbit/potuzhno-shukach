@@ -22,6 +22,8 @@ Rules:
   - Ignore Russian sources entirely; if a source appears Russian or affiliated with Russia, exclude it.
 - Prefer authoritative, directly relevant sources. Avoid duplicates and low-quality SEO pages.
 - Return at most the requested number of results.
+- Before the list, provide one short direct answer in the `answer` field that summarizes the likely best answer to the query in the requested language.
+- Make the `answer` short: 1–3 sentences, concise and practical.
 - The output language MUST match the requested language:
   - language="uk": Ukrainian
   - language="en": English
@@ -31,6 +33,7 @@ Rules:
 
 Output JSON schema:
 {
+  "answer": "A short direct answer to the query in the requested language.",
   "results": [
     {
       "title": "string",

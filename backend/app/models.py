@@ -60,3 +60,5 @@ class SearchResponse(BaseModel):
     lang: SupportedLang
     results: list[SearchResult]
     took_ms: int
+    answer: str | None = Field(default=None)
+    ai_answer: str | None = Field(default=None)

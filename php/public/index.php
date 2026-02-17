@@ -238,6 +238,54 @@ function ps_extract_json_from_text(string $text): array
     return $data2;
 }
 
+function ps_trim_answer_text(string $answer, int $maxLen = 280, int $maxSentences = 2): string
+{
+    $text = trim(preg_replace('/\s+/', ' ', $answer));
+    if ($text === '') return '';
+
+    $parts = preg_split('/(?<=[\.\!\?])\s+/', $text);
+    if (is_array($parts)) {
+        $clean = [];
+        foreach ($parts as $part) {
+            $part = trim((string) $part);
+            if ($part !== '') $clean[] = $part;
+        }
+        if ($clean) {
+            $text = implode(' ', array_slice($clean, 0, $maxSentences));
+        }
+    }
+
+    if (strlen($text) <= $maxLen) return $text;
+
+    $short = substr($text, 0, $maxLen - 1);
+    $lastSpace = strrpos($short, ' ');
+    if ($lastSpace === false) {
+        return substr($text, 0, $maxLen - 1) . '…';
+    }
+    return substr($text, 0, $lastSpace) . '…';
+}
+
+function ps_build_ai_fallback_answer(array $results, string $lang): ?string
+{
+    if ($results === []) return null;
+
+    $parts = [];
+    foreach (array_slice($results, 0, 2) as $item) {
+        if (!is_array($item)) continue;
+        $title = trim(strval($item['title'] ?? ''));
+        $snippet = trim(strval($item['snippet'] ?? ''));
+        $line = trim($title . '. ' . $snippet);
+        if ($line !== '.') $parts[] = $line;
+    }
+
+    if (!$parts) return null;
+
+    $prefix = $lang === 'uk' ? 'На основі знайдених сторінок: ' : 'Based on found pages: ';
+    $answer = $prefix . implode(' ', $parts);
+    $trimmed = ps_trim_answer_text($answer);
+    return $trimmed === '' ? null : $trimmed;
+}
+
 function ps_domain_from_url(string $url): ?string
 {
     $parts = parse_url($url);
@@ -501,10 +549,24 @@ function ps_handle_search(): never
         ];
     }
 
+    $rawAnswer = $data['answer'] ?? null;
+    $answer = null;
+    if (is_string($rawAnswer)) {
+        $answer = ps_trim_answer_text(trim($rawAnswer));
+        if ($answer === '') {
+            $answer = null;
+        }
+    }
+
+    if ($answer === null) {
+        $answer = ps_build_ai_fallback_answer($results, $lang);
+    }
+
     $tookMs = (int) round((microtime(true) - $started) * 1000);
     ps_json_response(200, [
         'query' => $query,
         'lang' => $lang,
+        'answer' => $answer,
         'results' => $results,
         'took_ms' => $tookMs,
     ]);

@@ -10,6 +10,7 @@
   "emptyHint": "Type a query and press Enter",
   "results": "Results",
   "noResults": "No results found",
+  "aiAnswer": "AI answer",
   "errorGeneric": "Something went wrong. Please try again.",
   "project": "Project",
   "author": "Author",

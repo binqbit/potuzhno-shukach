@@ -12,6 +12,8 @@ export type SearchResponse = {
   lang: SupportedLanguage;
   results: SearchResult[];
   took_ms: number;
+  answer?: string | null;
+  ai_answer?: string | null;
 };
 
 export async function search(

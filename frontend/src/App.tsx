@@ -46,6 +46,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [images, setImages] = useState<AttachedImage[]>([]);
+  const [aiAnswer, setAiAnswer] = useState<string | null>(null);
 
   useEffect(() => {
     return () => {
@@ -111,12 +112,14 @@ export default function App() {
     setHasSearched(true);
     setError(null);
     setResults([]);
+    setAiAnswer(null);
     try {
       const imageDataUrls = images.length ? await Promise.all(images.map((img) => fileToDataUrl(img.file))) : undefined;
       if (controller.signal.aborted) return;
 
       const data = await search(q, lang, 8, controller.signal, imageDataUrls);
       setResults(data.results);
+      setAiAnswer((data.answer || data.ai_answer || "").trim() || null);
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") return;
       if (err instanceof Error && err.message) setError(err.message);
@@ -131,9 +134,12 @@ export default function App() {
     setQuery("");
     setError(null);
     setResults([]);
+    setAiAnswer(null);
     setHasSearched(false);
     queueMicrotask(() => inputRef.current?.focus());
   }
+
+  const hasAnswerOrResults = results.length > 0 || Boolean(aiAnswer);
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden ps-bg text-white">
@@ -280,16 +286,18 @@ export default function App() {
           ) : null}
         </section>
 
-        {results.length ? (
+        {hasAnswerOrResults ? (
           <div className="mt-8 flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-white/80">
             <div>{t("results")}</div>
             <div className="text-xs font-medium text-white/50">{results.length}</div>
           </div>
         ) : null}
 
-        {results.length ? <ResultsList results={results} /> : null}
+        {hasAnswerOrResults ? (
+          <ResultsList results={results} aiAnswer={aiAnswer} aiAnswerLabel={t("aiAnswer")} />
+        ) : null}
 
-        {!loading && !error && hasSearched && !results.length ? (
+        {!loading && !error && hasSearched && !hasAnswerOrResults ? (
           <p className="mt-6 text-sm text-white/60">{t("noResults")}</p>
         ) : null}
       </main>
