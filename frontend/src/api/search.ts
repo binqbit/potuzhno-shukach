@@ -23,7 +23,18 @@ export async function search(
   signal?: AbortSignal,
   images?: string[],
 ): Promise<SearchResponse> {
-  const base = (import.meta.env.VITE_API_BASE as string | undefined) ?? "/api";
+  const explicitBase = import.meta.env.VITE_API_BASE as string | undefined;
+  const base =
+    explicitBase?.trim() ||
+    (() => {
+      if (typeof window === "undefined") {
+        return "/api";
+      }
+      const pathname = window.location.pathname || "/";
+      const basePath = pathname.endsWith("/") ? pathname : pathname.substring(0, pathname.lastIndexOf("/") + 1);
+      if (basePath === "/") return "/api";
+      return `${basePath.replace(/\/+$/u, "")}/api`;
+    })();
   const body: Record<string, unknown> = { query, lang, limit };
   if (images?.length) body.images = images;
   const resp = await fetch(`${base}/search`, {

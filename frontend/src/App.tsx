@@ -143,6 +143,8 @@ export default function App() {
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden ps-bg text-white">
+      <div className="ps-embroider ps-left" />
+      <div className="ps-embroider ps-right" />
       <div className="pointer-events-none absolute inset-0 opacity-35 ps-grid" />
 
       <header className="relative mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between">

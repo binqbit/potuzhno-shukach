@@ -9,6 +9,10 @@
     --ps-blue: 56 189 248; /* sky-400 */
     --ps-cyan: 34 211 238; /* cyan-400 */
     --ps-yellow: 250 204 21; /* amber-400 */
+    --ps-emb-red: 176 32 46; /* Ukrainian embroidery red */
+    --ps-emb-black: 28 24 26; /* dark thread */
+    --ps-emb-cream: 252 248 240; /* light fabric tone */
+    --ps-emb-white: 250 250 250;
   }
 
   body {
@@ -24,6 +28,47 @@
       radial-gradient(900px circle at 85% 10%, rgb(var(--ps-yellow) / 0.22), transparent 55%),
       radial-gradient(700px circle at 50% 110%, rgb(var(--ps-cyan) / 0.14), transparent 55%),
       linear-gradient(180deg, rgb(var(--ps-bg)) 0%, rgb(var(--ps-bg)) 100%);
+  }
+
+  .ps-embroider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    --ps-content-max: 56rem;
+    --ps-side-beyond: max(0px, calc((100vw - var(--ps-content-max)) / 2 + 1rem));
+    --ps-embroider-size: max(0px, calc(var(--ps-side-beyond) / 3));
+    --ps-edge-offset: var(--ps-embroider-size);
+    width: var(--ps-embroider-size);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 1;
+  }
+
+  .ps-embroider::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("/embroider-pattern.svg");
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    image-rendering: pixelated;
+    opacity: 0.5;
+  }
+
+  .ps-embroider.ps-left {
+    left: var(--ps-edge-offset);
+  }
+
+  .ps-embroider.ps-right {
+    right: var(--ps-edge-offset);
+  }
+
+  .ps-embroider.ps-right::before {
+    background-position: top left;
+  }
+
+  .ps-embroider.ps-left::before {
+    background-position: top right;
   }
 
   .ps-grid {

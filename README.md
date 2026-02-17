@@ -46,7 +46,7 @@ Docker Compose is intended for local testing. For a typical shared hosting (Apac
 ./scripts/export-hosting.ps1
 ```
 
-Upload everything from `hosting/` into your site root (`public_html`, `www`, etc).
+Upload everything from `hosting/` into your site root (`public_html`, `www`, etc), or upload `hosting/hosting.zip` (or `hosting/hosting.tar.gz` as fallback) and extract on the server.
 
 Create `hosting/.env` (or set hosting environment variables):
 
