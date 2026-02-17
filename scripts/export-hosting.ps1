@@ -10,6 +10,7 @@ $phpHtaccess = Join-Path $repoRoot "php/public/.htaccess"
 $phpPrompts = Join-Path $repoRoot "php/src/prompts.php"
 
 $outDir = Join-Path $repoRoot "hosting"
+$archivePath = Join-Path $outDir "hosting.zip"
 $envPath = Join-Path $outDir ".env"
 $preservedEnv = $null
 if (Test-Path $envPath) {
@@ -51,7 +52,15 @@ if ($preservedEnv -ne $null) {
   [System.IO.File]::WriteAllText($envPath, $preservedEnv)
 }
 
+Write-Host "== Create archive =="
+if (Test-Path $archivePath) {
+  Remove-Item -Force $archivePath
+}
+Compress-Archive -Path (Join-Path $outDir "*") -DestinationPath $archivePath
+Write-Host "Archive created: $archivePath"
+
 Write-Host ""
 Write-Host "Done."
 Write-Host "Upload the contents of: $outDir"
+Write-Host "Or upload the archive: $archivePath"
 Write-Host "Create: $outDir/.env  (OPENAI_API_KEY=...)"

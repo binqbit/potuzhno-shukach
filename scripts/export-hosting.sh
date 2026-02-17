@@ -12,6 +12,7 @@ PHP_HTACCESS="${REPO_ROOT}/php/public/.htaccess"
 PHP_PROMPTS="${REPO_ROOT}/php/src/prompts.php"
 
 OUT_DIR="${REPO_ROOT}/hosting"
+ARCHIVE_PATH="${OUT_DIR}/hosting.zip"
 ENV_PATH="${OUT_DIR}/.env"
 
 preserved_env_file=""
@@ -53,7 +54,26 @@ if [[ -n "${preserved_env_file}" ]]; then
   rm -f "${preserved_env_file}"
 fi
 
+echo "== Create archive =="
+if command -v zip >/dev/null 2>&1; then
+  TMP_ARCHIVE="${REPO_ROOT}/.tmp-hosting.zip"
+  rm -f "${TMP_ARCHIVE}" "${ARCHIVE_PATH}"
+  (cd "${OUT_DIR}" && zip -qr "${TMP_ARCHIVE}" .)
+  mv -f "${TMP_ARCHIVE}" "${ARCHIVE_PATH}"
+elif command -v tar >/dev/null 2>&1; then
+  ARCHIVE_PATH="${OUT_DIR}/hosting.tar.gz"
+  TMP_ARCHIVE="${REPO_ROOT}/.tmp-hosting.tar.gz"
+  rm -f "${TMP_ARCHIVE}" "${ARCHIVE_PATH}"
+  tar -czf "${TMP_ARCHIVE}" -C "${OUT_DIR}" .
+  mv -f "${TMP_ARCHIVE}" "${ARCHIVE_PATH}"
+else
+  echo "Neither zip nor tar found. Install one utility to create archive." >&2
+  exit 1
+fi
+echo "Archive created: ${ARCHIVE_PATH}"
+
 echo ""
 echo "Done."
 echo "Upload the contents of: ${OUT_DIR}"
+echo "Or upload the archive: ${ARCHIVE_PATH}"
 echo "Create: ${ENV_PATH}  (OPENAI_API_KEY=...)"
